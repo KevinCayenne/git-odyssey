@@ -30,7 +30,7 @@ test('第一個 commit 生出 main', () => {
 })
 
 test('沒 add 就 commit 會被擋下來', () => {
-  let repo = script(['git init', 'write a.md x'])
+  const repo = script(['git init', 'write a.md x'])
   const res = run(repo, 'git commit -m "空的"')
   assert.equal(res.lines[0]?.kind, 'err')
   assert.equal(res.mutated, false)

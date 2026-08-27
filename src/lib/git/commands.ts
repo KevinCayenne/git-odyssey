@@ -621,6 +621,7 @@ function gitBranch(repo: Repo, args: string[]): OutLine[] {
   const oid = start ? resolveRev(repo, start) : headOid(repo)
   if (!oid) fail('還沒有 commit，沒有東西可以當起點。')
   repo.branches[name] = oid!
+  logRef(repo, oid!, `branch: 建立分支 ${name}`)
   return [
     L.dim(`建立分支 ${name} 於 ${oid!.slice(0, 7)}`),
     L.hint('分支只是一張貼在某個 commit 上的便利貼。它幾乎不佔空間，所以別捨不得開。'),
