@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { layoutGraph, type BranchKind, type GraphNode } from '@/lib/git/layout'
+import { LANE_COLOR } from './laneColor'
 import type { Repo } from '@/lib/git/types'
 import { PRESENT_SCALE, usePresent } from '@/lib/present'
 
@@ -12,15 +13,6 @@ const COL_W = 94
 const ROW_H = 72
 const PAD_X = 52
 const PAD_Y = 45
-
-const LANE_COLOR: Record<BranchKind, string> = {
-  main: 'var(--vermilion)',
-  develop: 'var(--indigo)',
-  feature: 'var(--moss)',
-  release: 'var(--ochre)',
-  hotfix: 'var(--plum)',
-  loose: 'var(--ink-3)',
-}
 
 const KIND_NOTE: Record<BranchKind, string> = {
   main: '出得去的東西',

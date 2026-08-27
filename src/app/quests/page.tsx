@@ -13,7 +13,7 @@ export default function QuestsPage() {
   return (
     <Page>
       <section className="pt-12 pb-10 md:pt-16">
-        <p className="label mb-6">關卡 · 03</p>
+        <p className="label mb-6">關卡 · 04</p>
         <h1 className="font-display max-w-[14em] text-[2rem] leading-[1.22] md:text-[2.75rem]">
           八個會讓你卡住的場面。
         </h1>

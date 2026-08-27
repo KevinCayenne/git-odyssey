@@ -7,11 +7,12 @@ import { useCallback, useSyncExternalStore } from 'react'
 const NAV = [
   { href: '/', num: '00', label: '卷首' },
   { href: '/start', num: '01', label: '入門' },
-  { href: '/play', num: '02', label: '沙盒' },
-  { href: '/quests', num: '03', label: '關卡' },
-  { href: '/pair', num: '04', label: '人與 AI' },
-  { href: '/lifeflow', num: '05', label: '生活流' },
-  { href: '/teach', num: '06', label: '講師' },
+  { href: '/flow', num: '02', label: '指令圖' },
+  { href: '/play', num: '03', label: '沙盒' },
+  { href: '/quests', num: '04', label: '關卡' },
+  { href: '/pair', num: '05', label: '人與 AI' },
+  { href: '/lifeflow', num: '06', label: '生活流' },
+  { href: '/teach', num: '07', label: '講師' },
 ]
 
 type Theme = 'light' | 'dark'

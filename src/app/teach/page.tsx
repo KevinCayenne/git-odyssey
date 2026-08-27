@@ -41,6 +41,18 @@ const USES = [
     ),
   },
   {
+    key: 'flow',
+    term: '指令查得到',
+    note: '/flow',
+    def: (
+      <>
+        每個常用指令一張會動的流程圖。學生問「那 rebase 到底在幹嘛」的時候，
+        直接投影那一張按播放，比講三分鐘有用。每張圖旁邊都有「什麼時候用」
+        和「最常踩的坑」，也可以整頁當講義發下去。
+      </>
+    ),
+  },
+  {
     key: 'self',
     term: '學生自己走',
     note: '/quests',
@@ -67,11 +79,12 @@ const USES = [
 const SCHEDULE = [
   ['10 分', '卷首 + 給他們看 gitflow 那張圖：「下課前你會看懂它」'],
   ['15 分', '零基礎的班：投影「入門」的八步走查，邊按邊講三格'],
+  ['10 分', '投影「指令圖」的 A 節：add / commit 各播一次，把三格講死'],
   ['15 分', '示範 01、02 → 學生自己走第 01、02 關'],
   ['20 分', '示範 03 → 學生自己解第 03 關（衝突）'],
   ['15 分', '示範 04、05 → 講「人與 AI」那頁的四種相處模式'],
-  ['20 分', '學生走第 07 關（完整 gitflow），回頭看開場那張圖'],
-  ['10 分', '「生活流」收尾，或指定回家看'],
+  ['15 分', '學生走第 07 關（完整 gitflow），回頭看開場那張圖'],
+  ['5 分', '「生活流」收尾，或指定回家看'],
 ]
 
 function DemoCard({ demo }: { demo: Demo }) {
@@ -136,7 +149,7 @@ export default function TeachPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">講師手冊 · 06</p>
+        <p className="label mb-6">講師手冊 · 07</p>
         <h1 className="font-display max-w-[13em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           課堂上鋪不出來的場面，
           <br />

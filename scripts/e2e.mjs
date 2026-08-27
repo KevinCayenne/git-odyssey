@@ -187,6 +187,52 @@ check('add 之後檔案同時在工作目錄和暫存區', boxed >= 2, `${boxed}
 
 check('詞彙表有六個詞', (await page.locator('#glossary dl > div').count()) === 6)
 
+// --- 指令流程圖 ---
+await page.goto(`${BASE}/flow`, { waitUntil: 'networkidle' })
+
+const cards = await page.locator('article').count()
+check('每個常用指令都有一張卡', cards >= 20, `${cards} 張`)
+
+const legendPlaces = await page.locator('section:has-text("先認得這幾個地方") svg text').count()
+check('地圖那張把六個地方都畫出來', legendPlaces >= 20, `${legendPlaces} 個字`)
+
+// 動畫真的在動：同一張卡，播之前跟播到一半畫出來的東西必須不一樣
+const mergeCard = page.locator('article').filter({ hasText: 'git merge' }).first()
+await mergeCard.scrollIntoViewIfNeeded()
+await page.waitForTimeout(3600)
+const railDone = await mergeCard.locator('svg').first().innerHTML()
+await mergeCard.getByRole('button', { name: '從頭' }).click()
+await page.waitForTimeout(400)
+const railMid = await mergeCard.locator('svg').first().innerHTML()
+check('流程圖真的會動', railDone !== railMid)
+
+// 小圖是前後兩張內插出來的，所以中途跟播完長得不一樣
+const graphMid = await mergeCard.locator('svg').nth(1).innerHTML()
+await page.waitForTimeout(3600)
+const graphDone = await mergeCard.locator('svg').nth(1).innerHTML()
+check('歷史那張小圖跟著變形', graphMid !== graphDone)
+
+// merge 演出來要是真的合流點，不是 fast-forward
+const mergeGraphText = await mergeCard
+  .locator('svg')
+  .nth(1)
+  .evaluate((el) => el.textContent ?? '')
+check('merge 演的是真的合流', mergeGraphText.includes('feature/搜尋') && mergeGraphText.includes('main'))
+
+// 單步：點某一段的小條，旁白要跳過去
+const pullCard = page.locator('article').filter({ hasText: 'git pull' }).first()
+await pullCard.scrollIntoViewIfNeeded()
+await pullCard.getByRole('button', { name: '第 3 段' }).click()
+await page.waitForTimeout(250)
+const step3 = await pullCard.locator('p').filter({ hasText: '03' }).count()
+check('點段落可以跳著看', step3 > 0)
+
+check(
+  '新舊寫法對照表在',
+  (await page.locator('text=git switch <分支>').count()) > 0,
+)
+check('決策表在', (await page.locator('section:has-text("卡住的時候從這裡找路") dl > div').count()) >= 6)
+
 // --- 層疊層回歸測試 ---
 // 自訂樣式一旦掉出 @layer，Tailwind 的工具類就蓋不過去，
 // 所有小按鈕的 hover 和語意色邊框會安靜地失效。這裡守住那條線。

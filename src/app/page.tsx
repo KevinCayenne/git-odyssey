@@ -23,8 +23,19 @@ const CONTENTS = [
     ),
   },
   {
+    key: 'flow',
+    term: '02 指令圖',
+    note: '每個指令一張',
+    def: (
+      <>
+        每個常用指令一張會動的流程圖：東西從哪一格搬到哪一格、
+        歷史那邊同時發生什麼。忘記某個指令在幹嘛的時候翻這裡。
+      </>
+    ),
+  },
+  {
     key: 'play',
-    term: '02 沙盒',
+    term: '03 沙盒',
     note: '隨便亂搞',
     def: (
       <>
@@ -35,7 +46,7 @@ const CONTENTS = [
   },
   {
     key: 'quests',
-    term: '03 關卡',
+    term: '04 關卡',
     note: '八關',
     def: (
       <>
@@ -46,7 +57,7 @@ const CONTENTS = [
   },
   {
     key: 'pair',
-    term: '04 人與 AI',
+    term: '05 人與 AI',
     note: '協作',
     def: (
       <>
@@ -57,7 +68,7 @@ const CONTENTS = [
   },
   {
     key: 'lifeflow',
-    term: '05 生活流',
+    term: '06 生活流',
     note: '搬出程式碼',
     def: (
       <>
