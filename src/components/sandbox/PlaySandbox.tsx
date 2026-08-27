@@ -40,7 +40,7 @@ export function PlaySandbox() {
             key={p.id}
             onClick={() => setManual(p.id)}
             title={p.note}
-            className={`rounded-[2px] border px-2 py-[3px] text-[12.5px] transition-colors ${
+            className={`rounded-[2px] border px-2 py-[3px] text-[0.7812rem] transition-colors ${
               preset.id === p.id
                 ? 'border-ink bg-ink text-paper'
                 : 'border-rule text-ink-2 hover:border-ink-3 hover:text-ink'

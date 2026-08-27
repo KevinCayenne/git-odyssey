@@ -153,6 +153,40 @@ await page.waitForTimeout(900)
 const conflictShownAgain = await page.locator('text=/衝突/').count()
 check('第 03 段的連結點開就卡在衝突上', conflictShownAgain > 0)
 
+// --- 入門頁的八步走查 ---
+// 這是給零基礎的人看的教材，每一步都必須真的推進引擎狀態。
+await page.goto(`${BASE}/start`, { waitUntil: 'networkidle' })
+await page.waitForTimeout(500)
+const nodesNow = () => page.$$eval('.present-oid', (els) => els.length)
+const nextStep = page.getByRole('button', { name: /下一步/ })
+
+check('一進場圖是空的', (await nodesNow()) === 0)
+const seen = []
+for (let n = 0; n < 7; n++) {
+  seen.push(await page.locator('h3').first().textContent())
+  await nextStep.click()
+  await page.waitForTimeout(200)
+}
+seen.push(await page.locator('h3').first().textContent())
+
+check('八步都有各自的標題', new Set(seen).size === 8, seen.join(' → '))
+check('走完之後歷史上有兩個 commit', (await nodesNow()) === 2)
+check('最後一步不能再往下', (await page.getByRole('button', { name: '走完了' }).count()) === 1)
+
+// 中途那一步：檔案要同時出現在工作目錄和暫存區
+await page.getByRole('button', { name: '從頭再走一次' }).click()
+await page.waitForTimeout(200)
+for (let n = 0; n < 3; n++) {
+  await nextStep.click()
+  await page.waitForTimeout(180)
+}
+const boxed = await page.evaluate(() =>
+  [...document.querySelectorAll('.num')].filter((e) => e.textContent === '筆記.md').length,
+)
+check('add 之後檔案同時在工作目錄和暫存區', boxed >= 2, `${boxed} 處`)
+
+check('詞彙表有六個詞', (await page.locator('#glossary dl > div').count()) === 6)
+
 // --- 層疊層回歸測試 ---
 // 自訂樣式一旦掉出 @layer，Tailwind 的工具類就蓋不過去，
 // 所有小按鈕的 hover 和語意色邊框會安靜地失效。這裡守住那條線。

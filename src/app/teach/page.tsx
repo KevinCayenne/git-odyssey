@@ -29,6 +29,18 @@ const USES = [
     ),
   },
   {
+    key: 'primer',
+    term: '零基礎開場',
+    note: '/start',
+    def: (
+      <>
+        班上有完全沒碰過的人就從這頁開始。中間那個八步走查是投影用的 ——
+        你按「下一步」，三格會跟著亮，底下跑的是真引擎。
+        最後那張六個詞的表可以先叫大家收藏，卡住時翻回去。
+      </>
+    ),
+  },
+  {
     key: 'self',
     term: '學生自己走',
     note: '/quests',
@@ -54,6 +66,7 @@ const USES = [
 
 const SCHEDULE = [
   ['10 分', '卷首 + 給他們看 gitflow 那張圖：「下課前你會看懂它」'],
+  ['15 分', '零基礎的班：投影「入門」的八步走查，邊按邊講三格'],
   ['15 分', '示範 01、02 → 學生自己走第 01、02 關'],
   ['20 分', '示範 03 → 學生自己解第 03 關（衝突）'],
   ['15 分', '示範 04、05 → 講「人與 AI」那頁的四種相處模式'],
@@ -65,11 +78,11 @@ function DemoCard({ demo }: { demo: Demo }) {
   return (
     <article className="rule-b py-7 first:pt-0">
       <div className="flex items-baseline gap-3">
-        <span className="num text-[11px] text-vermilion">{demo.num}</span>
-        <h3 className="font-display text-[21px] leading-[1.35]">{demo.title}</h3>
+        <span className="num text-[0.6875rem] text-vermilion">{demo.num}</span>
+        <h3 className="font-display text-[1.3125rem] leading-[1.35]">{demo.title}</h3>
       </div>
 
-      <p className="mt-2 max-w-[62ch] text-[14.5px] leading-[1.85] text-ink-2">
+      <p className="mt-2 max-w-[62ch] text-[0.9062rem] leading-[1.85] text-ink-2">
         {demo.point}
       </p>
 
@@ -80,15 +93,15 @@ function DemoCard({ demo }: { demo: Demo }) {
               key={i}
               className="flex items-baseline gap-2.5 border-b border-rule-soft px-3 py-1.5 last:border-b-0"
             >
-              <span className="num shrink-0 text-[10px] text-ink-3">
+              <span className="num shrink-0 text-[0.625rem] text-ink-3">
                 {String(i + 1).padStart(2, '0')}
               </span>
               {step.startsWith('@') ? (
-                <span className="text-[12.5px] text-plum">
+                <span className="text-[0.7812rem] text-plum">
                   ⟢ 按下事件按鈕（agent 推了東西到 origin）
                 </span>
               ) : (
-                <span className="num text-[12.5px] text-ink">{step}</span>
+                <span className="num text-[0.7812rem] text-ink">{step}</span>
               )}
             </li>
           ))}
@@ -96,10 +109,10 @@ function DemoCard({ demo }: { demo: Demo }) {
 
         <div>
           <p className="label mb-1.5">可以直接念的一句</p>
-          <p className="font-display max-w-[38ch] text-[17px] leading-[1.6]">
+          <p className="font-display max-w-[38ch] text-[1.0625rem] leading-[1.6]">
             「{demo.line}」
           </p>
-          <p className="mt-4 max-w-[52ch] text-[14px] leading-[1.85] text-ink-2">
+          <p className="mt-4 max-w-[52ch] text-[0.875rem] leading-[1.85] text-ink-2">
             <span className="label mr-2">接著問</span>
             {demo.after}
           </p>
@@ -123,13 +136,13 @@ export default function TeachPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">講師手冊 · 05</p>
-        <h1 className="font-display max-w-[13em] text-[32px] leading-[1.2] md:text-[46px]">
+        <p className="label mb-6">講師手冊 · 06</p>
+        <h1 className="font-display max-w-[13em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           課堂上鋪不出來的場面，
           <br />
           這裡點一下就有。
         </h1>
-        <div className="prose mt-7 max-w-[52ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-7 max-w-[52ch] text-[0.9688rem] leading-[1.95]">
           <p>
             這頁是給站在台上的人用的。下面五段示範各自對應一個「學生一定會卡住」的地方，
             每段都有現成的連結：一個把開場備好讓你自己打，一個直接跳到結果。
@@ -175,8 +188,8 @@ export default function TeachPage() {
               key={time}
               className="rule-b grid grid-cols-1 gap-x-6 gap-y-1 py-3.5 sm:grid-cols-[minmax(0,90px)_minmax(0,1fr)]"
             >
-              <span className="num text-[12.5px] text-ink-3">{time}</span>
-              <span className="text-[14.5px] leading-[1.85] text-ink-2">{what}</span>
+              <span className="num text-[0.7812rem] text-ink-3">{time}</span>
+              <span className="text-[0.9062rem] leading-[1.85] text-ink-2">{what}</span>
             </div>
           ))}
         </div>
@@ -196,7 +209,7 @@ export default function TeachPage() {
             </Marginal>
           }
         >
-          <div className="prose mt-6 max-w-[58ch] text-[15.5px] leading-[1.95]">
+          <div className="prose mt-6 max-w-[58ch] text-[0.9688rem] leading-[1.95]">
             <p>
               <strong>要看過程</strong>：沙盒右下角有「複製這一段的連結」。它把學生打過的每一步
               編進網址，你點開會看到一模一樣的終端機紀錄和圖 ——
@@ -223,10 +236,11 @@ export default function TeachPage() {
               '打開「投影」，確認教室後排看得清楚',
               '日／夜挑一個 —— 投影機通常「日」比較清楚，個人螢幕「夜」比較舒服',
               '先把要用的示範連結開在分頁裡，上課不用回來這頁翻',
+              '班上有零基礎的人 → 先走一遍「入門」的八步，不然第 01 關就會卡住',
               '提醒學生進度存在自己的瀏覽器，不要中途換電腦',
             ].map((item) => (
-              <li key={item} className="flex gap-2.5 text-[14.5px] leading-[1.85]">
-                <span className="num shrink-0 text-[11px] text-ink-3">○</span>
+              <li key={item} className="flex gap-2.5 text-[0.9062rem] leading-[1.85]">
+                <span className="num shrink-0 text-[0.6875rem] text-ink-3">○</span>
                 <span className="text-ink-2">{item}</span>
               </li>
             ))}

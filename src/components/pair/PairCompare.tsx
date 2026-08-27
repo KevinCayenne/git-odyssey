@@ -73,7 +73,7 @@ export function PairCompare() {
           <button
             key={m.id}
             onClick={() => setMode(m)}
-            className={`rounded-[2px] border px-2.5 py-[4px] text-[12.5px] transition-colors ${
+            className={`rounded-[2px] border px-2.5 py-[4px] text-[0.7812rem] transition-colors ${
               mode.id === m.id
                 ? 'border-ink bg-ink text-paper'
                 : 'border-rule text-ink-2 hover:border-ink-3 hover:text-ink'
@@ -88,10 +88,10 @@ export function PairCompare() {
 
       <div className="rule-t px-4 py-4">
         <p className="label mb-1.5">結果</p>
-        <p className="font-display mb-2 text-[18px] leading-[1.4]">
+        <p className="font-display mb-2 text-[1.125rem] leading-[1.4]">
           {mode.verdict}
         </p>
-        <p className="prose max-w-[62ch] text-[14.5px] leading-[1.9] text-ink-2">
+        <p className="prose max-w-[62ch] text-[0.9062rem] leading-[1.9] text-ink-2">
           {mode.body}
         </p>
       </div>

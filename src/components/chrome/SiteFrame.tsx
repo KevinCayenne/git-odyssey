@@ -6,11 +6,12 @@ import { useCallback, useSyncExternalStore } from 'react'
 
 const NAV = [
   { href: '/', num: '00', label: '卷首' },
-  { href: '/play', num: '01', label: '沙盒' },
-  { href: '/quests', num: '02', label: '關卡' },
-  { href: '/pair', num: '03', label: '人與 AI' },
-  { href: '/lifeflow', num: '04', label: '生活流' },
-  { href: '/teach', num: '05', label: '講師' },
+  { href: '/start', num: '01', label: '入門' },
+  { href: '/play', num: '02', label: '沙盒' },
+  { href: '/quests', num: '03', label: '關卡' },
+  { href: '/pair', num: '04', label: '人與 AI' },
+  { href: '/lifeflow', num: '05', label: '生活流' },
+  { href: '/teach', num: '06', label: '講師' },
 ]
 
 type Theme = 'light' | 'dark'
@@ -71,7 +72,7 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
         <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
           <div className="flex items-baseline justify-between gap-6 py-3">
             <Link href="/" className="group shrink-0">
-              <span className="font-display text-[16px] font-semibold tracking-tight sm:text-[19px]">
+              <span className="font-display text-[1rem] font-semibold tracking-tight sm:text-[1.1875rem]">
                 Git Odyssey
               </span>
               <span className="label ml-3 hidden sm:inline">分岔的時間</span>
@@ -90,12 +91,12 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
                     className="group flex items-baseline gap-1 whitespace-nowrap sm:gap-1.5"
                   >
                     <span
-                      className={`num text-[10px] ${active ? 'text-vermilion' : 'text-ink-3'}`}
+                      className={`num text-[0.625rem] ${active ? 'text-vermilion' : 'text-ink-3'}`}
                     >
                       {item.num}
                     </span>
                     <span
-                      className={`text-[13px] transition-colors sm:text-[14px] ${
+                      className={`text-[0.8125rem] transition-colors sm:text-[0.875rem] ${
                         active
                           ? 'text-ink border-b border-vermilion'
                           : 'text-ink-2 group-hover:text-ink'
@@ -119,16 +120,17 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
           <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
             <div className="max-w-[52ch]">
               <p className="label mb-3">版權頁</p>
-              <p className="text-[14px] leading-[1.9] text-ink-2">
-                內文用思源宋體，標題是 Fraunces 開了 WONK 軸，指令一律 JetBrains
-                Mono。全站沒有一個無襯線字，也沒有一道陰影 —— 版面靠線和留白站著。
+              <p className="text-[0.875rem] leading-[1.9] text-ink-2">
+                中文指定微軟正黑體。它是 Windows 內建的字，不能自架 ——
+                沒有的平台會掉到思源黑體。拉丁字是 Fraunces，指令一律 JetBrains
+                Mono。沒有一道陰影，版面靠線和留白站著。
               </p>
-              <p className="text-[14px] leading-[1.9] text-ink-2 mt-3">
+              <p className="text-[0.875rem] leading-[1.9] text-ink-2 mt-3">
                 沙盒裡的 git 是真的在算：三方合併、共同祖先、rebase
                 重播，全都跑同一套邏輯。所以它會在你以為不會出事的地方出事。
               </p>
             </div>
-            <p className="num text-[11px] text-ink-3 md:text-right leading-[2]">
+            <p className="num text-[0.6875rem] text-ink-3 md:text-right leading-[2]">
               git-odyssey
               <br />
               一個關於「歷史怎麼被寫下來」的練習場

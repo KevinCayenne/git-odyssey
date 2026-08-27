@@ -3,7 +3,7 @@
 /* ==================================================================
    紙與墨
 
-   這裡沒有無襯線字、沒有陰影、沒有漸層、圓角最多 2px。
+   沒有陰影、沒有漸層、圓角最多 2px。
    結構全靠 1px 的線和留白撐起來 —— 像一本排得好的技術手冊，
    而不是一張到處都在發光的網頁。
    ================================================================== */
@@ -89,12 +89,16 @@
   --color-ochre: var(--ochre);
   --color-plum: var(--plum);
 
-  --font-display:
-    var(--font-fraunces), var(--font-serif-tc), "Songti TC",
-    "Source Han Serif TC", "Noto Serif CJK TC", "PMingLiU", serif;
-  --font-body:
-    var(--font-serif-tc), "Songti TC", "Source Han Serif TC",
-    "Noto Serif CJK TC", "PMingLiU", Georgia, serif;
+  /* 中文一律微軟正黑體優先。它只在 Windows 上有，所以後面接一串
+     各平台的黑體：思源黑體（我們自己載的）→ 蘋方 → 系統預設。
+     拉丁字仍然走 Fraunces，中西混排的標題在中文編輯設計裡是常見作法。 */
+  --font-jhenghei: 'Microsoft JhengHei', 'Microsoft JhengHei UI', '微軟正黑體';
+
+  --font-display: var(--font-fraunces), var(--font-jhenghei),
+    var(--font-sans-tc), 'PingFang TC', 'Heiti TC', 'Noto Sans CJK TC',
+    system-ui, sans-serif;
+  --font-body: var(--font-jhenghei), var(--font-sans-tc), 'PingFang TC',
+    'Heiti TC', 'Noto Sans CJK TC', system-ui, sans-serif;
   --font-mono:
     var(--font-mono-face), "SFMono-Regular", "Menlo", "Consolas", monospace;
 }
@@ -121,15 +125,22 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* 全站字級的單一旋鈕。
+       改成 rem 之後，這裡動一格，每一處字都跟著動 ——
+       而且使用者在瀏覽器把字調大時，版面真的會回應。 */
+    font-size: 112.5%; /* 18px */
   }
 
   body {
     background-color: var(--paper);
     color: var(--ink);
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.85;
-    font-feature-settings: "palt" 1;
+    /* palt 只留給標題。內文用它會把頓號句號壓到快消失，
+       一整段讀起來的節奏會忽緊忽鬆。 */
+    line-break: strict;
+    text-wrap: pretty;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -163,10 +174,11 @@
 
   .font-display {
     font-family: var(--font-display);
-    font-variation-settings:
-      "SOFT" 20,
-      "WONK" 1;
+    /* 中文換成黑體之後，WONK 的歪斜在同一行裡會顯得突兀，關掉 */
+    font-variation-settings: "SOFT" 14;
     letter-spacing: -0.015em;
+    /* 標題才壓標點：大字級下的全形標點不壓會鬆散得很明顯 */
+    font-feature-settings: "palt" 1;
   }
 
   /* 用 :where() 把特異性降到零。
@@ -174,7 +186,7 @@
      如果它們自己帶特異性，工具類就永遠蓋不過去 —— 按鈕看起來活著，其實是死的。 */
   :where(.label) {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-3);
@@ -183,7 +195,7 @@
 
   :where(.label-plain) {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.06em;
     color: var(--ink-3);
     line-height: 1.4;
@@ -261,7 +273,7 @@
 
   .btn {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
     padding: 0.5em 1.1em;
     border: 1px solid var(--ink);
@@ -309,7 +321,7 @@
 
   .term {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.7;
     font-variant-ligatures: none;
   }
@@ -331,7 +343,7 @@
   .term-hint {
     color: var(--indigo);
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.7;
   }
   .term-title {
@@ -438,35 +450,35 @@
 /* ------------------------------------------------------------------ */
 
 :root[data-present="1"] .term {
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.75;
 }
 :root[data-present="1"] .term-hint {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 :root[data-present="1"] .label,
 :root[data-present="1"] .label-plain {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 :root[data-present="1"] .present-lane {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 :root[data-present="1"] .present-lane-note {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 :root[data-present="1"] .present-ref {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 :root[data-present="1"] .present-oid {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 :root[data-present="1"] .present-objective {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 :root[data-present="1"] .present-chip {
-  font-size: 15px;
+  font-size: 0.9375rem;
   padding: 4px 10px;
 }
 :root[data-present="1"] .present-detail {
-  font-size: 17px;
+  font-size: 1.0625rem;
 }

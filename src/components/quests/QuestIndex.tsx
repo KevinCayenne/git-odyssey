@@ -68,19 +68,19 @@ export function QuestIndex() {
                 className="group grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-4 gap-y-1 py-5 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-x-6"
               >
                 <span
-                  className={`num text-[12px] ${cleared ? 'text-moss' : 'text-ink-3'}`}
+                  className={`num text-[0.75rem] ${cleared ? 'text-moss' : 'text-ink-3'}`}
                 >
                   {cleared ? '✓' : quest.num}
                 </span>
 
                 <span className="min-w-0">
-                  <span className="font-display block text-[21px] leading-[1.35] transition-colors group-hover:text-vermilion">
+                  <span className="font-display block text-[1.3125rem] leading-[1.35] transition-colors group-hover:text-vermilion">
                     {quest.title}
                   </span>
-                  <span className="num mt-0.5 block text-[11.5px] text-ink-3">
+                  <span className="num mt-0.5 block text-[0.7188rem] text-ink-3">
                     {quest.kicker}
                   </span>
-                  <span className="mt-1.5 block max-w-[62ch] text-[14px] leading-[1.85] text-ink-2">
+                  <span className="mt-1.5 block max-w-[62ch] text-[0.875rem] leading-[1.85] text-ink-2">
                     {quest.scene[0]}
                   </span>
                 </span>

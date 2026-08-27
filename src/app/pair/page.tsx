@@ -129,13 +129,13 @@ export default function PairPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">人與 AI · 03</p>
-        <h1 className="font-display max-w-[16em] text-[32px] leading-[1.2] md:text-[46px]">
+        <p className="label mb-6">人與 AI · 04</p>
+        <h1 className="font-display max-w-[16em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           它打字比你快。
           <br />
           所以你更需要一個能反悔的地方。
         </h1>
-        <div className="prose mt-7 max-w-[52ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-7 max-w-[52ch] text-[0.9688rem] leading-[1.95]">
           <p>
             過去 git 解決的是「多個人怎麼共用一份程式碼」。現在多了一種參與者：
             它產出速度快上一個量級，一次動的範圍也大得多，
@@ -184,7 +184,7 @@ export default function PairPage() {
             </Marginal>
           }
         >
-          <div className="prose mt-6 max-w-[58ch] text-[15.5px] leading-[1.95]">
+          <div className="prose mt-6 max-w-[58ch] text-[0.9688rem] leading-[1.95]">
             <p>
               很多人第一次遇到衝突會慌，覺得自己把東西弄壞了。恰好相反：
               git 停下來，是因為它<strong>拒絕替你猜</strong>。

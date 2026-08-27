@@ -38,13 +38,13 @@ export function SectionHead({
 }) {
   return (
     <div className="rule-b flex flex-col gap-3 pb-4 md:flex-row md:items-baseline md:gap-8">
-      <span className="num shrink-0 text-[11px] text-vermilion">{num}</span>
+      <span className="num shrink-0 text-[0.6875rem] text-vermilion">{num}</span>
       <div className="min-w-0">
-        <h2 className="font-display text-[26px] leading-[1.3] md:text-[30px]">
+        <h2 className="font-display text-[1.625rem] leading-[1.3] md:text-[1.875rem]">
           {title}
         </h2>
         {lead && (
-          <p className="mt-1.5 max-w-[54ch] text-[15px] leading-[1.85] text-ink-2">
+          <p className="mt-1.5 max-w-[54ch] text-[0.9375rem] leading-[1.85] text-ink-2">
             {lead}
           </p>
         )}
@@ -62,7 +62,7 @@ export function Marginal({
   children: React.ReactNode
 }) {
   return (
-    <aside className="border-l border-rule py-1 pl-4 text-[13px] leading-[1.8] text-ink-2">
+    <aside className="border-l border-rule py-1 pl-4 text-[0.8125rem] leading-[1.8] text-ink-2">
       {label && <span className="label mb-1 block">{label}</span>}
       {children}
     </aside>
@@ -95,7 +95,7 @@ export function Figure({
   return (
     <figure className="border border-rule">
       <div className="overflow-hidden">{children}</div>
-      <figcaption className="rule-t px-4 py-2 text-[12.5px] leading-[1.7] text-ink-3">
+      <figcaption className="rule-t px-4 py-2 text-[0.7812rem] leading-[1.7] text-ink-3">
         {caption}
       </figcaption>
     </figure>
@@ -116,14 +116,14 @@ export function Ledger({
           className="rule-b grid grid-cols-1 gap-1 py-3.5 sm:grid-cols-[minmax(0,196px)_minmax(0,1fr)] sm:gap-6"
         >
           <dt>
-            <span className="num block text-[13px] leading-[1.6] text-ink">
+            <span className="num block text-[0.8125rem] leading-[1.6] text-ink">
               {row.term}
             </span>
             {row.note && (
               <span className="label-plain mt-0.5 block">{row.note}</span>
             )}
           </dt>
-          <dd className="text-[14.5px] leading-[1.85] text-ink-2">{row.def}</dd>
+          <dd className="text-[0.9062rem] leading-[1.85] text-ink-2">{row.def}</dd>
         </div>
       ))}
     </dl>
