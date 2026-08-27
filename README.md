@@ -37,6 +37,45 @@ npm run e2e        # 用真的瀏覽器把關卡打一遍（需要先跑起 serv
 | `/quests` | 八個關卡，從第一個 commit 到完整的 gitflow |
 | `/pair` | 人與 AI：四種相處模式、一份可以帶走的規矩 |
 | `/lifeflow` | 生活流：gitflow 的分支語彙搬出程式碼之後 |
+| `/teach` | 講師手冊：五段課堂示範、排課表、怎麼收作業 |
+
+## 拿來上課
+
+`/teach` 那頁是給站在台上的人用的，重點在三個機制：
+
+**把一段操作編進網址。** 沙盒右下角的「複製這一段的連結」會把你打過的每一步
+編成 `?s=…`。別人點開會重播整段 —— 連終端機的逐行輸出都會長回來，
+而且是可以繼續往下打的活狀態，不是截圖。
+
+老師拿來出題（把場面弄好，貼連結給全班），學生拿來交作業或問「我卡在這裡」。
+存的是指令不是快照，所以連結很短：八關的解法全部串起來也不到 2 KB。
+
+**投影模式。** 右下角的「投影」把字和圖整個放大，顏色和結構不變。
+
+**進度匯出。** 關卡列表上的「複製進度」產生一段可以貼進表單的清單。
+進度存在瀏覽器的 localStorage，換裝置就沒了 —— 上課前提醒一句。
+
+課堂示範腳本寫在 `src/lib/quests/demos-teaching.ts`，**每次 CI 都會被跑過一遍**，
+確認指令還有效、該卡住的地方真的會卡住。連結由 `encodeSession` 現算，
+所以腳本改了連結一定跟著對。
+
+## 部署
+
+沒有後端、沒有 API route，所以哪裡都放得下。
+
+**Vercel** —— 連上 repo 就好，不用設定。
+
+**GitHub Pages** —— `.github/workflows/pages.yml` 已經寫好了。
+到 repo 的 Settings → Pages 把 Source 設成 GitHub Actions，push 到 `main` 就會部署。
+子路徑（`/<repo>`）由 `actions/configure-pages` 自動帶進 `BASE_PATH`。
+
+**其他靜態空間** ——
+
+```bash
+STATIC_EXPORT=1 BASE_PATH=/子路徑 npm run build   # 產出在 out/
+```
+
+`BASE_PATH` 只有在網址不是掛根目錄的時候才需要。
 
 ## 架構
 
@@ -92,3 +131,10 @@ src/app/              五個路由
 Next.js 16（App Router、Turbopack）、React 19、TypeScript strict
 （含 `noUncheckedIndexedAccess`）、Tailwind CSS v4。全站靜態輸出，沒有後端。
 進度存在瀏覽器的 localStorage 裡，沒有帳號。
+
+CSS 有一個地方值得記住：自訂樣式全部包在 `@layer base` / `@layer components` 裡。
+Tailwind v4 把工具類放進 `@layer utilities`，而層疊層的規則是「沒有分層的樣式一律
+贏過有分層的」—— 跟特異性無關，`:where()` 也救不了。掉出層外的話，
+`className="label hover:text-ink"` 的 hover 會安靜地失效，
+`border-moss` 也會被 `* { border-color }` 蓋掉：看起來活著，其實是死的。
+`npm run e2e` 有一段專門守這條線。

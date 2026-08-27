@@ -6,7 +6,15 @@ const BASE = process.env.BASE_URL ?? 'http://localhost:3000'
 const browser = await chromium.launch(
   process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {},
 )
-const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } })
+const context = await browser.newContext({ viewport: { width: 1400, height: 1000 } })
+await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: BASE })
+const page = await context.newPage()
+
+let failures = 0
+function check(label, ok, detail = '') {
+  console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${detail ? ' — ' + detail : ''}`)
+  if (!ok) failures++
+}
 const errors = []
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message))
 page.on('console', (m) => {
@@ -75,5 +83,105 @@ await page.waitForTimeout(300)
 const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'))
 console.log('主題切換後：', theme)
 
-console.log('\n瀏覽器錯誤：', errors.length ? errors.join('\n') : '無')
+// --- 分享連結：打一段、複製、換一個分頁點開，狀態要一模一樣 ---
+await page.goto(`${BASE}/play`, { waitUntil: 'networkidle' })
+await page.click('text=已經有一段歷史')
+await page.waitForTimeout(300)
+const script = [
+  'git switch feature/search',
+  'write extra.md 分享測試',
+  'git add .',
+  'git commit -m "看看連結傳不傳得過去"',
+  'git status',
+  'git switch main',
+  'git merge --no-ff feature/search',
+]
+for (const c of script) await type(c)
+await page.waitForTimeout(300)
+
+const before = await page.evaluate(() =>
+  [...document.querySelectorAll('.present-oid')].map((e) => e.textContent).join(','),
+)
+await page.click('text=/複製這一段的連結/')
+await page.waitForTimeout(500)
+const shared = await page.evaluate(() => navigator.clipboard.readText())
+check('分享連結有 s 參數', shared.includes('s='), shared.slice(0, 60) + '…')
+
+const fresh = await context.newPage()
+await fresh.goto(shared, { waitUntil: 'networkidle' })
+await fresh.waitForTimeout(700)
+const after = await fresh.evaluate(() =>
+  [...document.querySelectorAll('.present-oid')].map((e) => e.textContent).join(','),
+)
+check('點開連結重現出一模一樣的歷史', before === after && before.length > 0)
+const echoed = await fresh.evaluate(() =>
+  [...document.querySelectorAll('.term-echo')].map((e) => e.textContent),
+)
+check(
+  '連結重現了整段終端機紀錄',
+  script.every((c) => echoed.includes(c)),
+  `${echoed.length}/${script.length} 行`,
+)
+check(
+  '唯讀指令也留在紀錄裡（那是教學內容，不是雜訊）',
+  echoed.includes('git status'),
+)
+await fresh.close()
+
+// --- 投影模式 ---
+await page.click('text=投影')
+await page.waitForTimeout(300)
+const present = await page.evaluate(
+  () => document.documentElement.getAttribute('data-present'),
+)
+const fontSize = await page.evaluate(() => {
+  const el = document.querySelector('.term')
+  return el ? parseFloat(getComputedStyle(el).fontSize) : 0
+})
+check('投影模式打開', present === '1')
+check('終端機字級真的變大', fontSize >= 16, `${fontSize}px`)
+await page.click('text=投影')
+await page.waitForTimeout(200)
+
+// --- 講師頁的示範連結 ---
+await page.goto(`${BASE}/teach`, { waitUntil: 'networkidle' })
+const jump = page.getByRole('link', { name: '直接跳到結果' })
+const jumpLinks = await jump.count()
+check('講師頁列出五段示範', jumpLinks === 5, `找到 ${jumpLinks} 個`)
+await jump.nth(2).click()
+await page.waitForTimeout(900)
+const conflictShownAgain = await page.locator('text=/衝突/').count()
+check('第 03 段的連結點開就卡在衝突上', conflictShownAgain > 0)
+
+// --- 層疊層回歸測試 ---
+// 自訂樣式一旦掉出 @layer，Tailwind 的工具類就蓋不過去，
+// 所有小按鈕的 hover 和語意色邊框會安靜地失效。這裡守住那條線。
+await page.goto(`${BASE}/play?p=gitflow`, { waitUntil: 'networkidle' })
+const themeBtn = page.locator('button[aria-label="切換日／夜"]')
+const restColor = await themeBtn.evaluate((e) => getComputedStyle(e).color)
+await themeBtn.hover()
+await page.waitForTimeout(250)
+const hoverColor = await themeBtn.evaluate((e) => getComputedStyle(e).color)
+check('小按鈕的 hover 真的會變色', restColor !== hoverColor, `${restColor} → ${hoverColor}`)
+
+const presentBtn = page.locator('button[title*="放大字和圖"]')
+await presentBtn.click()
+await page.waitForTimeout(250)
+const activeColor = await presentBtn.evaluate((e) => getComputedStyle(e).color)
+check('啟用中的狀態看得出來', activeColor !== restColor, activeColor)
+await presentBtn.click()
+
+const eventBorder = await page
+  .locator('button:has-text("agent 推了東西到 origin")')
+  .first()
+  .evaluate((e) => getComputedStyle(e).borderTopColor)
+const ruleBorder = await page
+  .locator('.rule-b')
+  .first()
+  .evaluate((e) => getComputedStyle(e).borderBottomColor)
+check('語意色邊框沒有被通用邊框色蓋掉', eventBorder !== ruleBorder, eventBorder)
+
+check('沒有瀏覽器錯誤', errors.length === 0, errors.join(' | '))
 await browser.close()
+console.log(failures ? `\n${failures} 項沒過` : '\n全部通過')
+process.exit(failures ? 1 : 0)

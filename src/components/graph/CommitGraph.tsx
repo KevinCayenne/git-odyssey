@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { layoutGraph, type BranchKind, type GraphNode } from '@/lib/git/layout'
 import type { Repo } from '@/lib/git/types'
+import { PRESENT_SCALE, usePresent } from '@/lib/present'
 
 const COL_W = 84
 const ROW_H = 64
@@ -36,8 +37,17 @@ export function CommitGraph({
   className?: string
 }) {
   const graph = useMemo(() => layoutGraph(repo), [repo])
+  const { present } = usePresent()
   const [selected, setSelected] = useState<string | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
+
+  // 投影模式下整張圖等比放大。節點大小是 SVG 座標，只能用倍率撐，
+  // 沒辦法交給 CSS 的字級去帶。
+  const k = present ? PRESENT_SCALE : 1
+  const colW = COL_W * k
+  const rowH = ROW_H * k
+  const padX = PAD_X * k
+  const padY = PAD_Y * k
   const lastColumns = useRef<number | null>(null)
 
   // 歷史往右邊長，所以長出新東西的時候把視線帶過去。
@@ -52,11 +62,11 @@ export function CommitGraph({
     }
   }, [graph.columns])
 
-  const width = Math.max(PAD_X * 2 + (graph.columns - 1) * COL_W, 320)
-  const height = Math.max(PAD_Y * 2 + (graph.lanes.length - 1) * ROW_H, 140)
+  const width = Math.max(padX * 2 + (graph.columns - 1) * colW, 320)
+  const height = Math.max(padY * 2 + (graph.lanes.length - 1) * rowH, 140 * k)
 
-  const x = (n: GraphNode) => PAD_X + n.x * COL_W
-  const y = (n: GraphNode) => PAD_Y + n.lane * ROW_H
+  const x = (n: GraphNode) => padX + n.x * colW
+  const y = (n: GraphNode) => padY + n.lane * rowH
 
   const detail = graph.nodes.find((n) => n.oid === selected) ?? null
 
@@ -79,24 +89,26 @@ export function CommitGraph({
       <div className="flex items-stretch">
         {/* 左邊的軌道名稱固定不動，右邊才捲 */}
         <div
-          className="w-[126px] shrink-0 border-r border-rule bg-paper sm:w-[176px]"
-          style={{ paddingTop: PAD_Y - 11 }}
+          className={`shrink-0 border-r border-rule bg-paper ${
+            present ? 'w-[220px]' : 'w-[126px] sm:w-[176px]'
+          }`}
+          style={{ paddingTop: padY - 11 * k }}
         >
           {graph.lanes.map((lane) => (
             <div
               key={lane.index}
               className="flex items-start gap-2 pr-2 pl-3 sm:pr-3 sm:pl-4"
-              style={{ height: ROW_H }}
+              style={{ height: rowH }}
             >
               <span
-                className="mt-[6px] block h-[9px] w-[9px] shrink-0 rounded-[1px]"
-                style={{ background: LANE_COLOR[lane.kind] }}
+                className="mt-[6px] block shrink-0 rounded-[1px]"
+                style={{ background: LANE_COLOR[lane.kind], width: 9 * k, height: 9 * k }}
               />
               <span className="min-w-0">
-                <span className="num block truncate text-[11px] leading-[1.5] text-ink">
+                <span className="present-lane num block truncate text-[11px] leading-[1.5] text-ink">
                   {lane.label}
                 </span>
-                <span className="block text-[11px] leading-[1.4] text-ink-3">
+                <span className="present-lane-note block text-[11px] leading-[1.4] text-ink-3">
                   {KIND_NOTE[lane.kind]}
                 </span>
               </span>
@@ -118,8 +130,8 @@ export function CommitGraph({
                   key={lane.index}
                   x1={0}
                   x2={width}
-                  y1={PAD_Y + lane.index * ROW_H}
-                  y2={PAD_Y + lane.index * ROW_H}
+                  y1={padY + lane.index * rowH}
+                  y2={padY + lane.index * rowH}
                   stroke="var(--rule)"
                   strokeWidth={1}
                   strokeDasharray="1 7"
@@ -144,7 +156,7 @@ export function CommitGraph({
                     d={d}
                     fill="none"
                     stroke={LANE_COLOR[kind]}
-                    strokeWidth={e.incoming ? 1.25 : 1.75}
+                    strokeWidth={(e.incoming ? 1.25 : 1.75) * k}
                     strokeDasharray={e.to.remoteOnly ? '4 3' : undefined}
                     opacity={e.incoming ? 0.55 : 0.85}
                   />
@@ -164,10 +176,10 @@ export function CommitGraph({
                       <circle
                         cx={cx}
                         cy={cy}
-                        r={11}
+                        r={11 * k}
                         fill="none"
                         stroke="var(--ink)"
-                        strokeWidth={1}
+                        strokeWidth={1 * k}
                       />
                     )}
                     {isMerge ? (
@@ -175,34 +187,34 @@ export function CommitGraph({
                         <circle
                           cx={cx}
                           cy={cy}
-                          r={7}
+                          r={7 * k}
                           fill="var(--paper)"
                           stroke={color}
-                          strokeWidth={2}
+                          strokeWidth={2 * k}
                         />
-                        <circle cx={cx} cy={cy} r={2} fill={color} />
+                        <circle cx={cx} cy={cy} r={2 * k} fill={color} />
                       </>
                     ) : isAgent ? (
                       /* AI 做的 commit 是菱形。不用顏色分，因為顏色已經在講分支了 */
                       <rect
-                        x={cx - 5.6}
-                        y={cy - 5.6}
-                        width={11.2}
-                        height={11.2}
+                        x={cx - 5.6 * k}
+                        y={cy - 5.6 * k}
+                        width={11.2 * k}
+                        height={11.2 * k}
                         transform={`rotate(45 ${cx} ${cy})`}
                         fill={n.remoteOnly ? 'var(--paper)' : color}
                         stroke={color}
-                        strokeWidth={1.5}
+                        strokeWidth={1.5 * k}
                         strokeDasharray={n.remoteOnly ? '2 2' : undefined}
                       />
                     ) : (
                       <circle
                         cx={cx}
                         cy={cy}
-                        r={5.5}
+                        r={5.5 * k}
                         fill={n.remoteOnly ? 'var(--paper)' : color}
                         stroke={color}
-                        strokeWidth={1.5}
+                        strokeWidth={1.5 * k}
                         strokeDasharray={n.remoteOnly ? '2 2' : undefined}
                       />
                     )}
@@ -217,12 +229,12 @@ export function CommitGraph({
                 {n.refs.length > 0 && (
                   <div
                     className="pointer-events-none absolute flex -translate-x-1/2 flex-wrap justify-center gap-1"
-                    style={{ left: x(n), top: y(n) - 34, width: COL_W * 1.9 }}
+                    style={{ left: x(n), top: y(n) - 34 * k, width: colW * 1.9 }}
                   >
                     {n.refs.map((r) => (
                       <span
                         key={r}
-                        className="num rounded-[2px] border px-1 py-[1px] text-[9.5px] leading-[1.5]"
+                        className="present-ref num rounded-[2px] border px-1 py-[1px] text-[9.5px] leading-[1.5]"
                         style={{
                           borderColor: LANE_COLOR[graph.lanes[n.lane]?.kind ?? 'loose'],
                           color: LANE_COLOR[graph.lanes[n.lane]?.kind ?? 'loose'],
@@ -236,8 +248,8 @@ export function CommitGraph({
                 )}
                 <button
                   onClick={() => setSelected(n.oid === selected ? null : n.oid)}
-                  className="num absolute -translate-x-1/2 text-[9.5px] leading-none text-ink-3 hover:text-ink"
-                  style={{ left: x(n), top: y(n) + 14 }}
+                  className="present-oid num absolute -translate-x-1/2 text-[9.5px] leading-none text-ink-3 hover:text-ink"
+                  style={{ left: x(n), top: y(n) + 14 * k }}
                   title={n.commit.message}
                 >
                   {n.oid}
@@ -252,7 +264,9 @@ export function CommitGraph({
         {detail ? (
           <>
             <span className="num text-[11px] text-ink-3">{detail.oid}</span>
-            <span className="text-[14px] text-ink">{detail.commit.message}</span>
+            <span className="present-detail text-[14px] text-ink">
+              {detail.commit.message}
+            </span>
             <span className="label">
               {detail.commit.actor === 'agent' ? 'AI 代理' : '你'}
               {detail.commit.parents.length > 1 ? ' · 合流點' : ''}

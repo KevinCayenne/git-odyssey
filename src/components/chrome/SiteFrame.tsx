@@ -10,6 +10,7 @@ const NAV = [
   { href: '/quests', num: '02', label: '關卡' },
   { href: '/pair', num: '03', label: '人與 AI' },
   { href: '/lifeflow', num: '04', label: '生活流' },
+  { href: '/teach', num: '05', label: '講師' },
 ]
 
 type Theme = 'light' | 'dark'

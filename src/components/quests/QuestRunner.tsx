@@ -5,6 +5,8 @@ import { useCallback, useState } from 'react'
 
 import { Sandbox } from '@/components/sandbox/Sandbox'
 import { useProgress } from '@/lib/progress'
+import { useQueryParam } from '@/lib/query'
+import { decodeSession } from '@/lib/share'
 import { getQuest, questNeighbours } from '@/lib/quests/data'
 
 /**
@@ -14,6 +16,7 @@ import { getQuest, questNeighbours } from '@/lib/quests/data'
 export function QuestRunner({ slug }: { slug: string }) {
   const quest = getQuest(slug)
   const next = questNeighbours(slug).next
+  const code = useQueryParam('s')
   const { mark } = useProgress()
   const [hintsShown, setHintsShown] = useState(0)
   const [showSolution, setShowSolution] = useState(false)
@@ -126,6 +129,8 @@ export function QuestRunner({ slug }: { slug: string }) {
 
   return (
     <Sandbox
+      key={code}
+      replay={decodeSession(code)}
       initial={quest.setup}
       intro={quest.intro}
       objectives={quest.objectives}

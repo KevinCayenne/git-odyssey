@@ -1,0 +1,51 @@
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一次部署，但不砍掉進行中的那次
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: 取得 Pages 的網址設定
+        id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - name: 靜態輸出
+        run: npm run build
+        env:
+          STATIC_EXPORT: '1'
+          # 專案型 Pages 的網址帶著 /<repo>，這裡自動帶進去
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - name: 讓 Pages 不要把 _next 當成 Jekyll 的東西吃掉
+        run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

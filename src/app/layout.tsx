@@ -47,7 +47,7 @@ export const viewport: Viewport = {
 }
 
 /** 在畫面畫出來之前先套好主題，避免閃一下白的。 */
-const themeBoot = `(function(){try{var t=localStorage.getItem('odyssey-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})()`
+const themeBoot = `(function(){try{var d=document.documentElement;var t=localStorage.getItem('odyssey-theme');if(t==='light'||t==='dark'){d.setAttribute('data-theme',t)}if(localStorage.getItem('odyssey-present')==='1'){d.setAttribute('data-present','1')}}catch(e){}})()`
 
 export default function RootLayout({
   children,

@@ -1,27 +1,61 @@
 'use client'
 
 import Link from 'next/link'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useProgress } from '@/lib/progress'
 import { QUESTS } from '@/lib/quests/data'
 
 export function QuestIndex() {
   const { done, clear } = useProgress()
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (!copied) return
+    const t = setTimeout(() => setCopied(false), 2600)
+    return () => clearTimeout(t)
+  }, [copied])
+
+  // 進度只存在自己的瀏覽器裡，老師看不到。
+  // 所以給一段可以貼回去的文字，當作最土但最可靠的交作業方式。
+  const copyProgress = useCallback(async () => {
+    const cleared = QUESTS.filter((q) => done.includes(q.slug))
+    const text =
+      `Git Odyssey 進度 ${cleared.length}/${QUESTS.length}\n` +
+      QUESTS.map(
+        (q) => `${done.includes(q.slug) ? '✓' : '○'} ${q.num} ${q.title}`,
+      ).join('\n')
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+    } catch {
+      // 沒有剪貼簿權限就算了，畫面上本來就看得到
+    }
+  }, [done])
 
   return (
     <div>
-      <div className="rule-b flex items-baseline justify-between gap-4 pb-2">
+      <div className="rule-b flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pb-2">
         <p className="label">
           {done.length} / {QUESTS.length} 關
         </p>
-        {done.length > 0 && (
+        <div className="flex items-baseline gap-3">
           <button
-            onClick={clear}
+            onClick={copyProgress}
             className="label hover:text-ink transition-colors"
+            title="複製一段可以貼給老師的進度文字"
           >
-            清掉紀錄
+            {copied ? '複製好了' : '複製進度'}
           </button>
-        )}
+          {done.length > 0 && (
+            <button
+              onClick={clear}
+              className="label hover:text-ink transition-colors"
+            >
+              清掉紀錄
+            </button>
+          )}
+        </div>
       </div>
 
       <ol>
