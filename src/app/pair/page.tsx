@@ -129,7 +129,7 @@ export default function PairPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">人與 AI · 04</p>
+        <p className="label mb-6">人與 AI · 05</p>
         <h1 className="font-display max-w-[16em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           它打字比你快。
           <br />

@@ -77,7 +77,7 @@ export default function LifeflowPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">生活流 · 05</p>
+        <p className="label mb-6">生活流 · 06</p>
         <h1 className="font-display max-w-[11em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           分支真正教你的，
           <br />

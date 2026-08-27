@@ -671,6 +671,18 @@ function switchTo(repo: Repo, target: string, create: boolean): OutLine[] {
 }
 
 function gitCheckout(repo: Repo, args: string[]): OutLine[] {
+  // 舊的 checkout 一個人幹兩件事。`--` 後面接檔名的時候它其實是 restore ——
+  // 這正是 2019 年要把它拆成 switch 和 restore 的原因，也是最多人被咬的地方。
+  const dash = args.indexOf('--')
+  if (dash >= 0) {
+    const paths = args.slice(dash + 1)
+    if (!paths.length) fail('git checkout -- <檔案>')
+    return [
+      ...gitRestore(repo, paths),
+      L.hint('這個用法現在叫 git restore <檔案>。同一件事，名字比較不會騙人。'),
+    ]
+  }
+
   const bIdx = args.indexOf('-b')
   if (bIdx >= 0) {
     const name = args[bIdx + 1]
