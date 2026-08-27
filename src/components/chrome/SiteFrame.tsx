@@ -120,8 +120,9 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
             <div className="max-w-[52ch]">
               <p className="label mb-3">版權頁</p>
               <p className="text-[14px] leading-[1.9] text-ink-2">
-                內文用思源宋體，標題是 Fraunces 開了 WONK 軸，指令一律 JetBrains
-                Mono。全站沒有一個無襯線字，也沒有一道陰影 —— 版面靠線和留白站著。
+                中文指定微軟正黑體。它是 Windows 內建的字，不能自架 ——
+                沒有的平台會掉到思源黑體。拉丁字是 Fraunces，指令一律 JetBrains
+                Mono。沒有一道陰影，版面靠線和留白站著。
               </p>
               <p className="text-[14px] leading-[1.9] text-ink-2 mt-3">
                 沙盒裡的 git 是真的在算：三方合併、共同祖先、rebase

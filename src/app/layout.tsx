@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, JetBrains_Mono, Noto_Serif_TC } from 'next/font/google'
+import { Fraunces, JetBrains_Mono, Noto_Sans_TC } from 'next/font/google'
 
 import { SiteFrame } from '@/components/chrome/SiteFrame'
 
 import './globals.css'
 
-/* 三種字，都不是預設值：
-   Fraunces 有 WONK 軸，字會歪，像鉛字。
-   思源宋體撐中文 —— 螢幕上的明體讀起來像書，不像 dashboard。
-   JetBrains Mono 只給指令和數字用。全站沒有任何一個無襯線字。 */
+/* 中文指定微軟正黑體。它是 Windows 內建的專有字型，不能自架，
+   所以只能寫在字型堆疊最前面 —— 有裝的人看得到，沒裝的人往後掉。
+   思源黑體就是那個接住其他平台的網路字型：同樣是黑體，字面感覺很近。
+
+   拉丁字沿用 Fraunces，指令和數字沿用 JetBrains Mono。 */
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -17,11 +18,11 @@ const fraunces = Fraunces({
   variable: '--font-fraunces',
 })
 
-const serifTC = Noto_Serif_TC({
+const sansTC = Noto_Sans_TC({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-serif-tc',
+  variable: '--font-sans-tc',
 })
 
 const mono = JetBrains_Mono({
@@ -55,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="zh-Hant"
-      className={`${fraunces.variable} ${serifTC.variable} ${mono.variable}`}
+      className={`${fraunces.variable} ${sansTC.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>

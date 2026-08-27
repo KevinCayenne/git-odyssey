@@ -3,7 +3,7 @@
 /* ==================================================================
    紙與墨
 
-   這裡沒有無襯線字、沒有陰影、沒有漸層、圓角最多 2px。
+   沒有陰影、沒有漸層、圓角最多 2px。
    結構全靠 1px 的線和留白撐起來 —— 像一本排得好的技術手冊，
    而不是一張到處都在發光的網頁。
    ================================================================== */
@@ -89,12 +89,16 @@
   --color-ochre: var(--ochre);
   --color-plum: var(--plum);
 
-  --font-display:
-    var(--font-fraunces), var(--font-serif-tc), "Songti TC",
-    "Source Han Serif TC", "Noto Serif CJK TC", "PMingLiU", serif;
-  --font-body:
-    var(--font-serif-tc), "Songti TC", "Source Han Serif TC",
-    "Noto Serif CJK TC", "PMingLiU", Georgia, serif;
+  /* 中文一律微軟正黑體優先。它只在 Windows 上有，所以後面接一串
+     各平台的黑體：思源黑體（我們自己載的）→ 蘋方 → 系統預設。
+     拉丁字仍然走 Fraunces，中西混排的標題在中文編輯設計裡是常見作法。 */
+  --font-jhenghei: 'Microsoft JhengHei', 'Microsoft JhengHei UI', '微軟正黑體';
+
+  --font-display: var(--font-fraunces), var(--font-jhenghei),
+    var(--font-sans-tc), 'PingFang TC', 'Heiti TC', 'Noto Sans CJK TC',
+    system-ui, sans-serif;
+  --font-body: var(--font-jhenghei), var(--font-sans-tc), 'PingFang TC',
+    'Heiti TC', 'Noto Sans CJK TC', system-ui, sans-serif;
   --font-mono:
     var(--font-mono-face), "SFMono-Regular", "Menlo", "Consolas", monospace;
 }
@@ -129,7 +133,10 @@
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.85;
-    font-feature-settings: "palt" 1;
+    /* palt 只留給標題。內文用它會把頓號句號壓到快消失，
+       一整段讀起來的節奏會忽緊忽鬆。 */
+    line-break: strict;
+    text-wrap: pretty;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -163,10 +170,11 @@
 
   .font-display {
     font-family: var(--font-display);
-    font-variation-settings:
-      "SOFT" 20,
-      "WONK" 1;
+    /* 中文換成黑體之後，WONK 的歪斜在同一行裡會顯得突兀，關掉 */
+    font-variation-settings: "SOFT" 14;
     letter-spacing: -0.015em;
+    /* 標題才壓標點：大字級下的全形標點不壓會鬆散得很明顯 */
+    font-feature-settings: "palt" 1;
   }
 
   /* 用 :where() 把特異性降到零。
