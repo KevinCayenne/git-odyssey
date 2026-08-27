@@ -63,13 +63,13 @@ export default function Home() {
       <section className="pt-14 pb-16 md:pt-24 md:pb-24">
         <p className="label mb-8">卷首 · 00</p>
 
-        <h1 className="font-display max-w-[11em] text-[40px] leading-[1.18] tracking-tight md:text-[64px] md:leading-[1.12]">
+        <h1 className="font-display max-w-[11em] text-[2.5rem] leading-[1.18] tracking-tight md:text-[4rem] md:leading-[1.12]">
           版本控制在管的
           <br />
           從來不是檔案。
         </h1>
 
-        <div className="prose mt-9 max-w-[46ch] text-[16.5px] leading-[1.95] md:mt-12">
+        <div className="prose mt-9 max-w-[46ch] text-[1.0312rem] leading-[1.95] md:mt-12">
           <p>
             是決定。每一次 commit，你其實都在回答同一個問題：
             <strong>這一組改動，算不算一件事？</strong>
@@ -121,7 +121,7 @@ export default function Home() {
             </Marginal>
           }
         >
-          <div className="prose mt-6 max-w-[58ch] text-[15.5px] leading-[1.95]">
+          <div className="prose mt-6 max-w-[58ch] text-[0.9688rem] leading-[1.95]">
             <p>
               讓 agent 直接在 main 上動手，等於讓一個工作極快、但不知道你在意什麼的人，
               直接改你正在用的東西。它八成是對的。問題在那個「八成」。
@@ -151,7 +151,7 @@ export default function Home() {
           title="Gitflow 真正教你的，是怎麼放棄"
           lead="一條分支被砍掉不叫失敗，叫做「試過了，資料收到了，不採用」。"
         />
-        <div className="prose mt-6 max-w-[58ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-6 max-w-[58ch] text-[0.9688rem] leading-[1.95]">
           <p>
             大部分人不敢試新東西，不是因為懶，是因為心裡沒有那條可以砍掉的分支 ——
             一旦開始就等於承諾，於是乾脆不開始。

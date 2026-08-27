@@ -31,10 +31,10 @@ function FileRow({
   const preview = (content ?? '').split('\n')[0] ?? ''
   return (
     <div className="flex items-baseline gap-2 py-[3px]">
-      <span className={`num shrink-0 text-[11px] ${m.cls}`}>{m.sign}</span>
-      <span className="num shrink-0 text-[11.5px] text-ink">{path}</span>
+      <span className={`num shrink-0 text-[0.6875rem] ${m.cls}`}>{m.sign}</span>
+      <span className="num shrink-0 text-[0.7188rem] text-ink">{path}</span>
       {preview && (
-        <span className="truncate text-[11.5px] text-ink-3">{preview}</span>
+        <span className="truncate text-[0.7188rem] text-ink-3">{preview}</span>
       )}
     </div>
   )
@@ -56,11 +56,11 @@ function Zone({
   return (
     <div className="rule-b px-4 py-3 last:border-b-0">
       <div className="mb-1.5 flex items-baseline gap-2">
-        <span className="num text-[10px] text-vermilion">{num}</span>
-        <span className="text-[13px] text-ink">{title}</span>
-        <span className="text-[11px] text-ink-3">{note}</span>
+        <span className="num text-[0.625rem] text-vermilion">{num}</span>
+        <span className="text-[0.8125rem] text-ink">{title}</span>
+        <span className="text-[0.6875rem] text-ink-3">{note}</span>
       </div>
-      {empty ? <p className="text-[11.5px] text-ink-3">（空的）</p> : children}
+      {empty ? <p className="text-[0.7188rem] text-ink-3">（空的）</p> : children}
     </div>
   )
 }
@@ -100,7 +100,7 @@ export function WorkspacePanel({ repo }: { repo: Repo }) {
           />
         ))}
         {dirty.length === 0 && workFiles.length > 0 && (
-          <p className="text-[11.5px] text-ink-3">
+          <p className="text-[0.7188rem] text-ink-3">
             {workFiles.length} 個檔案，都跟暫存區一樣
           </p>
         )}
@@ -138,7 +138,7 @@ export function WorkspacePanel({ repo }: { repo: Repo }) {
           <p className="label mb-1" style={{ color: 'var(--vermilion)' }}>
             {repo.pending.kind} 進行到一半
           </p>
-          <p className="text-[12.5px] leading-[1.75] text-ink-2">
+          <p className="text-[0.7812rem] leading-[1.75] text-ink-2">
             {repo.pending.conflicts.length > 0
               ? `${repo.pending.conflicts.join('、')} 兩邊都動過。決定要留什麼，write 回去，然後 git add。`
               : '衝突解完了，可以繼續了。'}

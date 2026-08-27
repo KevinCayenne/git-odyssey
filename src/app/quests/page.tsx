@@ -13,10 +13,10 @@ export default function QuestsPage() {
     <Page>
       <section className="pt-12 pb-10 md:pt-16">
         <p className="label mb-6">關卡 · 02</p>
-        <h1 className="font-display max-w-[14em] text-[32px] leading-[1.22] md:text-[44px]">
+        <h1 className="font-display max-w-[14em] text-[2rem] leading-[1.22] md:text-[2.75rem]">
           八個會讓你卡住的場面。
         </h1>
-        <div className="prose mt-6 max-w-[52ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-6 max-w-[52ch] text-[0.9688rem] leading-[1.95]">
           <p>
             每一關都是一個具體的處境，不是指令表 ——
             兩個人同時改了同一句話、agent 推了一批東西上去、

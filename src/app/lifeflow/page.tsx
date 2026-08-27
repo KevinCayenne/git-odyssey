@@ -63,10 +63,10 @@ function FlowMap() {
               className="block h-[9px] w-[9px] shrink-0 translate-y-[-1px] rounded-[1px]"
               style={{ background: row.color }}
             />
-            <span className="num text-[13px] text-ink">{row.branch}</span>
+            <span className="num text-[0.8125rem] text-ink">{row.branch}</span>
           </div>
-          <div className="font-display text-[16px] leading-[1.5]">{row.life}</div>
-          <div className="text-[14px] leading-[1.85] text-ink-2">{row.rule}</div>
+          <div className="font-display text-[1rem] leading-[1.5]">{row.life}</div>
+          <div className="text-[0.875rem] leading-[1.85] text-ink-2">{row.rule}</div>
         </div>
       ))}
     </div>
@@ -78,12 +78,12 @@ export default function LifeflowPage() {
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
         <p className="label mb-6">生活流 · 04</p>
-        <h1 className="font-display max-w-[11em] text-[32px] leading-[1.2] md:text-[46px]">
+        <h1 className="font-display max-w-[11em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           分支真正教你的，
           <br />
           是怎麼放棄。
         </h1>
-        <div className="prose mt-7 max-w-[52ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-7 max-w-[52ch] text-[0.9688rem] leading-[1.95]">
           <p>
             大部分人不敢試新東西，不是因為懶。是因為心裡沒有那條可以砍掉的分支 ——
             一旦開始就像是承諾了什麼，中途停下來會被自己判定成失敗，
@@ -134,10 +134,10 @@ export default function LifeflowPage() {
         >
           <div className="mt-6 space-y-8">
             <div>
-              <h3 className="font-display text-[19px] leading-[1.4]">
+              <h3 className="font-display text-[1.1875rem] leading-[1.4]">
                 一、習慣實驗有了明確的結束條件
               </h3>
-              <div className="prose mt-2 max-w-[58ch] text-[15px] leading-[1.9]">
+              <div className="prose mt-2 max-w-[58ch] text-[0.9375rem] leading-[1.9]">
                 <p>
                   開分支的時候就先講好觀察期多長。時間到了只有兩個結果：合併，或砍掉。
                   沒有「再看看」這個選項 —— 那是分支開太久的主因，
@@ -147,10 +147,10 @@ export default function LifeflowPage() {
             </div>
 
             <div>
-              <h3 className="font-display text-[19px] leading-[1.4]">
+              <h3 className="font-display text-[1.1875rem] leading-[1.4]">
                 二、承認「學到一半」是一種正當狀態
               </h3>
-              <div className="prose mt-2 max-w-[58ch] text-[15px] leading-[1.9]">
+              <div className="prose mt-2 max-w-[58ch] text-[0.9375rem] leading-[1.9]">
                 <p>
                   develop 存在的意義，就是承認有些東西已經進來了、
                   但還不到可以拿出去用的程度。生活裡很多焦慮來自把這兩層混在一起：
@@ -161,10 +161,10 @@ export default function LifeflowPage() {
             </div>
 
             <div>
-              <h3 className="font-display text-[19px] leading-[1.4]">
+              <h3 className="font-display text-[1.1875rem] leading-[1.4]">
                 三、急件處理完要合回去
               </h3>
-              <div className="prose mt-2 max-w-[58ch] text-[15px] leading-[1.9]">
+              <div className="prose mt-2 max-w-[58ch] text-[0.9375rem] leading-[1.9]">
                 <p>
                   hotfix 最容易被忘記的不是修，是修完之後要把它合回 develop。
                   在生活裡對應的是：突發狀況處理完了，
@@ -183,7 +183,7 @@ export default function LifeflowPage() {
           title="不要照抄的地方"
           lead="這是比喻，不是規格。老實講一下它哪裡會壞掉。"
         />
-        <div className="prose mt-6 max-w-[58ch] text-[15.5px] leading-[1.95]">
+        <div className="prose mt-6 max-w-[58ch] text-[0.9688rem] leading-[1.95]">
           <p>
             第一，生活沒有 <code>revert</code>。程式碼可以乾淨地抵銷一個 commit，
             說過的話、花掉的時間不行。所以在生活這邊，
@@ -206,7 +206,7 @@ export default function LifeflowPage() {
       <section className="pb-8">
         <div className="border border-rule px-5 py-6 md:px-8 md:py-8">
           <p className="label mb-3">帶走這一句</p>
-          <p className="font-display max-w-[24ch] text-[24px] leading-[1.45] md:text-[30px]">
+          <p className="font-display max-w-[24ch] text-[1.5rem] leading-[1.45] md:text-[1.875rem]">
             先分岔，再決定。
             <br />
             決定之前不用承諾，決定之後留下紀錄。

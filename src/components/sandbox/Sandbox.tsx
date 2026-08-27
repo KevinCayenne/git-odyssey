@@ -274,12 +274,12 @@ export function Sandbox({
             {objectives.map((o, i) => (
               <span key={o.id} className="flex items-baseline gap-1.5">
                 <span
-                  className={`num text-[11px] ${done[i] ? 'text-moss' : 'text-ink-3'}`}
+                  className={`num text-[0.6875rem] ${done[i] ? 'text-moss' : 'text-ink-3'}`}
                 >
                   {done[i] ? '✓' : '○'}
                 </span>
                 <span
-                  className={`present-objective text-[13px] ${
+                  className={`present-objective text-[0.8125rem] ${
                     done[i]
                       ? 'text-ink-3 line-through decoration-ink-3/50'
                       : 'text-ink'
@@ -304,7 +304,7 @@ export function Sandbox({
                   <button
                     key={c}
                     onClick={() => execute(c)}
-                    className="present-chip num rounded-[2px] border border-rule px-1.5 py-[2px] text-[11px] text-ink-2 transition-colors hover:border-ink-3 hover:bg-paper-2 hover:text-ink"
+                    className="present-chip num rounded-[2px] border border-rule px-1.5 py-[2px] text-[0.6875rem] text-ink-2 transition-colors hover:border-ink-3 hover:bg-paper-2 hover:text-ink"
                   >
                     {c}
                   </button>
@@ -313,7 +313,7 @@ export function Sandbox({
                   <button
                     key={e.id}
                     onClick={() => fireEvent(e)}
-                    className="present-chip rounded-[2px] border border-plum/60 px-1.5 py-[2px] text-[11.5px] text-plum transition-colors hover:bg-plum hover:text-paper"
+                    className="present-chip rounded-[2px] border border-plum/60 px-1.5 py-[2px] text-[0.7188rem] text-plum transition-colors hover:bg-plum hover:text-paper"
                     title={e.note}
                   >
                     ⟢ {e.label}
@@ -333,7 +333,7 @@ export function Sandbox({
             <div className="rule-b flex flex-wrap items-center justify-between gap-2 px-4 py-2">
               <button
                 onClick={toggleActor}
-                className={`num rounded-[2px] border px-2 py-[3px] text-[11px] transition-colors ${
+                className={`num rounded-[2px] border px-2 py-[3px] text-[0.6875rem] transition-colors ${
                   repo.actor === 'agent'
                     ? 'border-plum bg-plum text-paper'
                     : 'border-rule text-ink-2 hover:border-ink-3 hover:text-ink'
