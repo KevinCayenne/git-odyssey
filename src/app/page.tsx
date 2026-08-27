@@ -12,8 +12,19 @@ import { gitflowDemo, pairDemo } from '@/lib/quests/demos'
 
 const CONTENTS = [
   {
+    key: 'start',
+    term: '01 入門',
+    note: '沒碰過 git',
+    def: (
+      <>
+        八步走完第一個 commit，按「下一步」就好，不用打字。
+        加上最少要記的六個詞。完全沒碰過的話從這裡開始。
+      </>
+    ),
+  },
+  {
     key: 'play',
-    term: '01 沙盒',
+    term: '02 沙盒',
     note: '隨便亂搞',
     def: (
       <>
@@ -24,7 +35,7 @@ const CONTENTS = [
   },
   {
     key: 'quests',
-    term: '02 關卡',
+    term: '03 關卡',
     note: '八關',
     def: (
       <>
@@ -35,7 +46,7 @@ const CONTENTS = [
   },
   {
     key: 'pair',
-    term: '03 人與 AI',
+    term: '04 人與 AI',
     note: '協作',
     def: (
       <>
@@ -46,7 +57,7 @@ const CONTENTS = [
   },
   {
     key: 'lifeflow',
-    term: '04 生活流',
+    term: '05 生活流',
     note: '搬出程式碼',
     def: (
       <>

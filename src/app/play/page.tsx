@@ -13,7 +13,7 @@ export default function PlayPage() {
     <>
       <Page>
         <section className="pt-12 pb-8 md:pt-16">
-          <p className="label mb-6">沙盒 · 01</p>
+          <p className="label mb-6">沙盒 · 02</p>
           <h1 className="font-display max-w-[14em] text-[2rem] leading-[1.22] md:text-[2.75rem]">
             弄壞它，不會有事。
           </h1>

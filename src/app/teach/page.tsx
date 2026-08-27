@@ -29,6 +29,18 @@ const USES = [
     ),
   },
   {
+    key: 'primer',
+    term: '零基礎開場',
+    note: '/start',
+    def: (
+      <>
+        班上有完全沒碰過的人就從這頁開始。中間那個八步走查是投影用的 ——
+        你按「下一步」，三格會跟著亮，底下跑的是真引擎。
+        最後那張六個詞的表可以先叫大家收藏，卡住時翻回去。
+      </>
+    ),
+  },
+  {
     key: 'self',
     term: '學生自己走',
     note: '/quests',
@@ -54,6 +66,7 @@ const USES = [
 
 const SCHEDULE = [
   ['10 分', '卷首 + 給他們看 gitflow 那張圖：「下課前你會看懂它」'],
+  ['15 分', '零基礎的班：投影「入門」的八步走查，邊按邊講三格'],
   ['15 分', '示範 01、02 → 學生自己走第 01、02 關'],
   ['20 分', '示範 03 → 學生自己解第 03 關（衝突）'],
   ['15 分', '示範 04、05 → 講「人與 AI」那頁的四種相處模式'],
@@ -123,7 +136,7 @@ export default function TeachPage() {
   return (
     <Page>
       <section className="pt-12 pb-14 md:pt-16">
-        <p className="label mb-6">講師手冊 · 05</p>
+        <p className="label mb-6">講師手冊 · 06</p>
         <h1 className="font-display max-w-[13em] text-[2rem] leading-[1.2] md:text-[2.875rem]">
           課堂上鋪不出來的場面，
           <br />
@@ -223,6 +236,7 @@ export default function TeachPage() {
               '打開「投影」，確認教室後排看得清楚',
               '日／夜挑一個 —— 投影機通常「日」比較清楚，個人螢幕「夜」比較舒服',
               '先把要用的示範連結開在分頁裡，上課不用回來這頁翻',
+              '班上有零基礎的人 → 先走一遍「入門」的八步，不然第 01 關就會卡住',
               '提醒學生進度存在自己的瀏覽器，不要中途換電腦',
             ].map((item) => (
               <li key={item} className="flex gap-2.5 text-[0.9062rem] leading-[1.85]">
