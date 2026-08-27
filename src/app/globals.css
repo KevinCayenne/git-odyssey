@@ -1,0 +1,472 @@
+@import "tailwindcss";
+
+/* ==================================================================
+   紙與墨
+
+   這裡沒有無襯線字、沒有陰影、沒有漸層、圓角最多 2px。
+   結構全靠 1px 的線和留白撐起來 —— 像一本排得好的技術手冊，
+   而不是一張到處都在發光的網頁。
+   ================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --paper: #f2eee3;
+  --paper-2: #e9e3d5;
+  --paper-3: #ded7c5;
+  --ink: #191710;
+  --ink-2: #4d493c;
+  --ink-3: #857f6d;
+  --rule: #cfc7b4;
+  --rule-soft: #ded7c5;
+
+  --vermilion: #b23a2e;
+  --indigo: #2e4a63;
+  --moss: #56682f;
+  --ochre: #9c6c2a;
+  --plum: #6b4370;
+
+  --sel: #f0d9a8;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #131210;
+  --paper-2: #1b1915;
+  --paper-3: #24211b;
+  --ink: #e9e3d5;
+  --ink-2: #b3ac9a;
+  --ink-3: #7d7768;
+  --rule: #34312a;
+  --rule-soft: #24211b;
+
+  --vermilion: #e2705e;
+  --indigo: #82a9c7;
+  --moss: #a3b672;
+  --ochre: #d5a55e;
+  --plum: #b58cba;
+
+  --sel: #4a3d1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --paper: #131210;
+    --paper-2: #1b1915;
+    --paper-3: #24211b;
+    --ink: #e9e3d5;
+    --ink-2: #b3ac9a;
+    --ink-3: #7d7768;
+    --rule: #34312a;
+    --rule-soft: #24211b;
+
+    --vermilion: #e2705e;
+    --indigo: #82a9c7;
+    --moss: #a3b672;
+    --ochre: #d5a55e;
+    --plum: #b58cba;
+
+    --sel: #4a3d1c;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-soft: var(--rule-soft);
+
+  --color-vermilion: var(--vermilion);
+  --color-indigo: var(--indigo);
+  --color-moss: var(--moss);
+  --color-ochre: var(--ochre);
+  --color-plum: var(--plum);
+
+  --font-display:
+    var(--font-fraunces), var(--font-serif-tc), "Songti TC",
+    "Source Han Serif TC", "Noto Serif CJK TC", "PMingLiU", serif;
+  --font-body:
+    var(--font-serif-tc), "Songti TC", "Source Han Serif TC",
+    "Noto Serif CJK TC", "PMingLiU", Georgia, serif;
+  --font-mono:
+    var(--font-mono-face), "SFMono-Regular", "Menlo", "Consolas", monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* 基礎                                                                */
+/* ------------------------------------------------------------------ */
+
+/* ==================================================================
+   底下全部包在 @layer 裡面，這件事不是整理癖。
+
+   Tailwind v4 把工具類放進 @layer utilities，而層疊層的規則是
+   「沒有分層的樣式一律贏過有分層的」—— 跟特異性無關，:where() 也救不了。
+   所以只要這些 class 沒進層：
+     className="label hover:text-ink"   → hover 永遠不會生效
+     className="border-b border-moss"   → 被 * { border-color } 蓋掉
+   按鈕和邊框看起來活著，其實是死的。
+   ================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--rule);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.85;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 紙的顆粒。低到幾乎看不見，但拿掉就會發現螢幕變乾淨得太假。 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: var(--sel);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--vermilion);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------------------------ */
+  /* 字                                                                  */
+  /* ------------------------------------------------------------------ */
+
+  .font-display {
+    font-family: var(--font-display);
+    font-variation-settings:
+      "SOFT" 20,
+      "WONK" 1;
+    letter-spacing: -0.015em;
+  }
+
+  /* 用 :where() 把特異性降到零。
+     這兩個 class 常常跟 hover:text-ink 之類的工具類一起用，
+     如果它們自己帶特異性，工具類就永遠蓋不過去 —— 按鈕看起來活著，其實是死的。 */
+  :where(.label) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    line-height: 1.4;
+  }
+
+  :where(.label-plain) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    line-height: 1.4;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 段落之間用「首行縮排」而不是空行，中文排版才立得住 */
+  .prose p {
+    margin-top: 0.35em;
+  }
+  .prose p + p {
+    text-indent: 2em;
+  }
+  .prose strong {
+    font-weight: 600;
+    background: linear-gradient(transparent 62%, var(--sel) 62%);
+  }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--paper-2);
+    border: 1px solid var(--rule-soft);
+    padding: 0.05em 0.35em;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .prose a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--vermilion);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 線                                                                  */
+  /* ------------------------------------------------------------------ */
+
+  .rule-t {
+    border-top: 1px solid var(--rule);
+  }
+  .rule-b {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* 印刷用的裁切標記，放在版面角落 */
+  .crop::before,
+  .crop::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-color: var(--rule);
+  }
+  .crop::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .crop::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 按鈕：一條線，反白，沒了                                             */
+  /* ------------------------------------------------------------------ */
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 0.5em 1.1em;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    background: transparent;
+    border-radius: 2px;
+    transition:
+      background-color 120ms ease-out,
+      color 120ms ease-out;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    line-height: 1.4;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .btn-quiet {
+    border-color: var(--rule);
+    color: var(--ink-2);
+  }
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--ink-3);
+  }
+  .btn-mark {
+    border-color: var(--vermilion);
+    color: var(--vermilion);
+  }
+  .btn-mark:hover:not(:disabled) {
+    background: var(--vermilion);
+    color: var(--paper);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 終端機                                                              */
+  /* ------------------------------------------------------------------ */
+
+  .term {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    font-variant-ligatures: none;
+  }
+  .term-out {
+    color: var(--ink-2);
+  }
+  .term-dim {
+    color: var(--ink-3);
+  }
+  .term-ok {
+    color: var(--moss);
+  }
+  .term-err {
+    color: var(--vermilion);
+  }
+  .term-warn {
+    color: var(--ochre);
+  }
+  .term-hint {
+    color: var(--indigo);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .term-title {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .term-echo {
+    color: var(--ink);
+  }
+
+  .caret {
+    animation: blink 1.15s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 圖                                                                  */
+  /* ------------------------------------------------------------------ */
+
+  .lane-main {
+    color: var(--vermilion);
+  }
+  .lane-develop {
+    color: var(--indigo);
+  }
+  .lane-feature {
+    color: var(--moss);
+  }
+  .lane-release {
+    color: var(--ochre);
+  }
+  .lane-hotfix {
+    color: var(--plum);
+  }
+  .lane-loose {
+    color: var(--ink-3);
+  }
+
+  @keyframes node-in {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .node-in {
+    animation: node-in 220ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: var(--len);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 捲軸                                                                */
+  /* ------------------------------------------------------------------ */
+
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: var(--rule);
+    border-radius: 0;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 投影模式                                                            */
+/*                                                                     */
+/* 教室後排看得到才算數。字級整體往上推，留白收掉一點，                  */
+/* 但顏色和結構完全不變 —— 換的是尺度，不是設計。                        */
+/* ------------------------------------------------------------------ */
+
+:root[data-present="1"] .term {
+  font-size: 17px;
+  line-height: 1.75;
+}
+:root[data-present="1"] .term-hint {
+  font-size: 18px;
+}
+:root[data-present="1"] .label,
+:root[data-present="1"] .label-plain {
+  font-size: 13px;
+}
+:root[data-present="1"] .present-lane {
+  font-size: 15px;
+}
+:root[data-present="1"] .present-lane-note {
+  font-size: 14px;
+}
+:root[data-present="1"] .present-ref {
+  font-size: 13px;
+}
+:root[data-present="1"] .present-oid {
+  font-size: 13px;
+}
+:root[data-present="1"] .present-objective {
+  font-size: 18px;
+}
+:root[data-present="1"] .present-chip {
+  font-size: 15px;
+  padding: 4px 10px;
+}
+:root[data-present="1"] .present-detail {
+  font-size: 17px;
+}
