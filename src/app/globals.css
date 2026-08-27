@@ -160,6 +160,14 @@ body::before {
   line-height: 1.4;
 }
 
+.label-plain {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
 .num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;

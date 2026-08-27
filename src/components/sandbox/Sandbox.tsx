@@ -161,7 +161,7 @@ export function Sandbox({
           <CommitGraph repo={repo} />
         </div>
 
-        <div className="grid min-h-[380px] grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
           <div className="flex min-w-0 flex-col">
             {(quickCommands.length > 0 || visibleEvents.length > 0) && (
               <div className="rule-b flex flex-wrap items-center gap-1.5 px-4 py-2">
@@ -190,7 +190,7 @@ export function Sandbox({
               repo={repo}
               entries={entries}
               onSubmit={execute}
-              className="min-h-[300px] flex-1"
+              className="min-h-[280px] flex-1"
             />
           </div>
 

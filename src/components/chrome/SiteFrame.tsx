@@ -70,13 +70,13 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
         <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
           <div className="flex items-baseline justify-between gap-6 py-3">
             <Link href="/" className="group shrink-0">
-              <span className="font-display text-[19px] font-semibold tracking-tight">
+              <span className="font-display text-[16px] font-semibold tracking-tight sm:text-[19px]">
                 Git Odyssey
               </span>
               <span className="label ml-3 hidden sm:inline">分岔的時間</span>
             </Link>
 
-            <nav className="flex items-baseline gap-4 md:gap-7 overflow-x-auto scroll-thin">
+            <nav className="scroll-thin flex items-baseline gap-3 overflow-x-auto md:gap-7">
               {NAV.map((item) => {
                 const active =
                   item.href === '/'
@@ -86,7 +86,7 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="group flex items-baseline gap-1.5 whitespace-nowrap"
+                    className="group flex items-baseline gap-1 whitespace-nowrap sm:gap-1.5"
                   >
                     <span
                       className={`num text-[10px] ${active ? 'text-vermilion' : 'text-ink-3'}`}
@@ -94,7 +94,7 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
                       {item.num}
                     </span>
                     <span
-                      className={`text-[14px] transition-colors ${
+                      className={`text-[13px] transition-colors sm:text-[14px] ${
                         active
                           ? 'text-ink border-b border-vermilion'
                           : 'text-ink-2 group-hover:text-ink'
@@ -113,7 +113,7 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="rule-t mt-24">
+      <footer className="rule-t mt-16">
         <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10 py-10">
           <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
             <div className="max-w-[52ch]">

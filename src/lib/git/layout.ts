@@ -62,10 +62,25 @@ const KIND_ORDER: Record<BranchKind, number> = {
   loose: 5,
 }
 
-/** 誰先來認領 commit。main 先認，所以主幹永遠是最上面那條直線。 */
+/**
+ * 誰先來認領 commit。這跟顯示順序不是同一件事。
+ *
+ * 認領要照「誰是誰的娘家」來排：長命的整合分支先認，從它身上長出來的後認。
+ * 不然 release 沿著第一個父親往回走的時候，會把 develop 的主幹整條吃掉，
+ * develop 那條軌道就從圖上消失了。
+ */
+const CLAIM_ORDER: Record<BranchKind, number> = {
+  main: 0,
+  develop: 1,
+  release: 2,
+  hotfix: 3,
+  feature: 4,
+  loose: 5,
+}
+
 function claimOrder(names: string[]): string[] {
   return [...names].sort((a, b) => {
-    const d = KIND_ORDER[branchKind(a)] - KIND_ORDER[branchKind(b)]
+    const d = CLAIM_ORDER[branchKind(a)] - CLAIM_ORDER[branchKind(b)]
     return d !== 0 ? d : a.localeCompare(b)
   })
 }

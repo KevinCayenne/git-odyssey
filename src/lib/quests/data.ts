@@ -190,6 +190,7 @@ export const QUESTS: Quest[] = [
         id: 'back',
         label: '切回 main，確認它完全沒被動到',
         check: (r) =>
+          commitCount(r) >= 2 &&
           r.head.type === 'branch' &&
           r.head.name === 'main' &&
           r.work['recipe.md'] === '蛋炒飯：先炒蛋，盛起來，炒飯，再倒回去',
@@ -268,13 +269,18 @@ export const QUESTS: Quest[] = [
         label: '檔案裡沒有留下衝突標記',
         check: (r) => {
           const content = r.work['README.md']
-          return content !== undefined && !hasConflictMarkers(content)
+          return (
+            hasMergeCommit(r, r.branches['main']) &&
+            content !== undefined &&
+            !hasConflictMarkers(content)
+          )
         },
       },
       {
         id: 'clean',
         label: '收乾淨，沒有半途而廢的狀態',
-        check: (r) => isClean(r) && r.pending === null,
+        check: (r) =>
+          hasMergeCommit(r, r.branches['main']) && isClean(r) && r.pending === null,
       },
     ],
     hints: [
@@ -433,12 +439,13 @@ export const QUESTS: Quest[] = [
       {
         id: 'gone',
         label: '設定檔裡不再有那把寫死的密鑰',
-        check: (r) => !(r.work['config.md'] ?? '').includes('sk-live'),
+        check: (r) =>
+          commitCount(r) >= 4 && !(r.work['config.md'] ?? '').includes('sk-live'),
       },
       {
         id: 'kept',
         label: '快取那個 commit 要留著，它是好的',
-        check: (r) => (r.work['app.md'] ?? '').includes('快取'),
+        check: (r) => commitCount(r) >= 4 && (r.work['app.md'] ?? '').includes('快取'),
       },
       {
         id: 'safe',
@@ -528,9 +535,12 @@ export const QUESTS: Quest[] = [
       {
         id: 'no-merge',
         label: '過程中沒有生出合流點',
-        check: (r) =>
-          Boolean(r.branches['feature/search']) &&
-          !hasMergeCommit(r, r.branches['feature/search']),
+        check: (r) => {
+          const m = r.branches['main']
+          const f = r.branches['feature/search']
+          if (!m || !f || m === f || !isAncestor(r, m, f)) return false
+          return !hasMergeCommit(r, f)
+        },
       },
       {
         id: 'message',

@@ -38,13 +38,13 @@ for (const quest of QUESTS) {
     assert.ok(quest.closing.length > 0)
   })
 
-  test(`${quest.num} ${quest.title}：一開始不會誤判成已完成`, () => {
+  test(`${quest.num} ${quest.title}：一進場一個綠勾都不該有`, () => {
     const repo = quest.setup()
-    const passed = quest.objectives.filter((o) => o.check(repo))
-    assert.notEqual(
-      passed.length,
-      quest.objectives.length,
-      '所有目標一開始就是綠的，這關等於沒有關',
+    const passed = quest.objectives.filter((o) => o.check(repo)).map((o) => o.label)
+    assert.deepEqual(
+      passed,
+      [],
+      '這些目標還沒動手就成立了，看起來像已經做完：' + passed.join('、'),
     )
   })
 
@@ -86,5 +86,16 @@ test('第 06 關的 rebase 不留合流點', () => {
     const c = final.commits[cur]!
     assert.ok(c.parents.length <= 1, 'rebase 之後不該有 merge commit')
     stack.push(...c.parents)
+  }
+})
+
+test('說明頁用的示範場景都跑得起來', async (t) => {
+  const { gitflowDemo, lifeDemo, pairDemo } = await import('./demos')
+  for (const [name, build] of Object.entries({ gitflowDemo, pairDemo, lifeDemo })) {
+    await t.test(name, () => {
+      const repo = build()
+      assert.ok(Object.keys(repo.commits).length > 0)
+      assert.equal(repo.pending, null, '示範場景不該停在半途')
+    })
   }
 })

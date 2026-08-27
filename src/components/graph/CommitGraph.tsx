@@ -38,16 +38,18 @@ export function CommitGraph({
   const graph = useMemo(() => layoutGraph(repo), [repo])
   const [selected, setSelected] = useState<string | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
-  const lastColumns = useRef(0)
+  const lastColumns = useRef<number | null>(null)
 
-  // 歷史往右邊長，所以長出新東西的時候把視線帶過去
+  // 歷史往右邊長，所以長出新東西的時候把視線帶過去。
+  // 第一次不算 —— 一進場就自己捲到底，反而會把開頭那幾個 commit 藏起來。
   useEffect(() => {
     const el = scroller.current
     if (!el) return
-    if (graph.columns > lastColumns.current) {
+    const prev = lastColumns.current
+    lastColumns.current = graph.columns
+    if (prev !== null && graph.columns > prev) {
       el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' })
     }
-    lastColumns.current = graph.columns
   }, [graph.columns])
 
   const width = Math.max(PAD_X * 2 + (graph.columns - 1) * COL_W, 320)
@@ -60,7 +62,7 @@ export function CommitGraph({
 
   if (!graph.nodes.length) {
     return (
-      <div className={`flex items-center justify-center py-20 ${className}`}>
+      <div className={`flex items-center justify-center py-12 ${className}`}>
         <p className="text-ink-3 text-[15px] text-center max-w-[34ch] leading-[1.9]">
           還沒有任何 commit。
           <br />
@@ -77,13 +79,13 @@ export function CommitGraph({
       <div className="flex items-stretch">
         {/* 左邊的軌道名稱固定不動，右邊才捲 */}
         <div
-          className="shrink-0 border-r border-rule bg-paper"
-          style={{ width: 148, paddingTop: PAD_Y - 11 }}
+          className="w-[126px] shrink-0 border-r border-rule bg-paper sm:w-[176px]"
+          style={{ paddingTop: PAD_Y - 11 }}
         >
           {graph.lanes.map((lane) => (
             <div
               key={lane.index}
-              className="flex items-start gap-2 pr-3 pl-4"
+              className="flex items-start gap-2 pr-2 pl-3 sm:pr-3 sm:pl-4"
               style={{ height: ROW_H }}
             >
               <span
